@@ -2,7 +2,7 @@
 # list all types what the model identified
 # REMEMBER LABELS in your model have to be defined as following in this .py
 # 「tshirt -> 0」; 「shirt -> 1」; 「suit -> 2」; 「dress -> 3」; 「vest -> 4」;
-types=["T恤", "襯衫", "西裝", "洋裝", "背心"]
+types=["T-shirt", "Shirt", "Suit", "Dress", "Vest"]
 
 # load the "MODEL" what you want
 from keras.models import load_model
@@ -24,5 +24,5 @@ imglist.append(preprocess_input(np.array(fn)))
 xs=np.array(imglist)
 
 # Identification Result
-print("辨識結果INDEX:", onion.predict(xs).argmax(axis=-1))
-print("辨識結果:", types[onion.predict(xs).argmax(axis=-1)[0]])
+print("Identification Result INDEX:", onion.predict(xs).argmax(axis=-1))
+print("Identification Result:", types[onion.predict(xs).argmax(axis=-1)[0]])
