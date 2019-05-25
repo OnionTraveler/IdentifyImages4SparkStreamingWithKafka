@@ -19,7 +19,7 @@ def identify(inputKeyValue):
         from keras.models import load_model
         global onion
         if onion is None:
-            onion = load_model("clothes5_4310.h5")  # spark-submit 用「--files modules/clothes5_4310.h5 identify4spark.py」攜帶檔案到叢集時，其匯入檔案路徑必在「./」下
+            onion = load_model("clothes5_4310.h5")  # spark-submit 用「--files modules/clothes5_4310.h5」攜帶檔案到叢集時，其匯入檔案路徑必在「./」下
 
         import base64
         data=base64.b64decode(predictPicture)  # 注意輸入的圖片資料型態必須是字節(bytes)，即傳進來的圖片必須先被「base64.b64encode(f.read())」編碼，收到資料後才能被「base64.b64decode(predictPicture)」解碼
@@ -84,6 +84,9 @@ if __name__ == "__main__":
 
 
 #========================= ( CMD 4 running this file(identify4spark.py) in Spark Streaming )
-# spark-submit --master spark://172.21.0.2:7077 --executor-memory 4G --executor-cores 2 --driver-memory 4G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identify4spark.py
+# spark-submit --master spark://master:7077 --executor-memory 4G --executor-cores 2 --driver-memory 4G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identify4SparkStreamingWithKafka.py
+
+# spark-submit --master spark://172.21.0.2:7077 --executor-memory 4G --executor-cores 2 --driver-memory 4G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identify4SparkStreamingWithKafka.py
+
 
 

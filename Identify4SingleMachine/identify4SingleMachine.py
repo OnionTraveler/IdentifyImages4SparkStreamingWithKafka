@@ -28,7 +28,7 @@ def identify(modulePath,predictPicturePath):
     return onion.predict(xs).argmax(axis=-1), types[onion.predict(xs).argmax(axis=-1)[0]]
 
 if __name__=='__main__':
-    result=identify('./modules/XXX.h5',"XXX.jpg")
+    result=identify("XXX.h5","XXX.jpg")
     print("Identification Result INDEX:", result[0])
     print("Identification Result:", result[1])
        
