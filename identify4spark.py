@@ -1,7 +1,9 @@
 #!/usr/bin/python3
+# you must 「pip3 install numpy pandas Pillow jieba keras kafka tensorflow tensorflowonspark」 to run the following code!
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
-from pyspark.streaming.kafka import KafkaUtils
+from pyspark.streaming.kafka import KafkaUtils  # This is for 「kafka streaming connection」 from 「--packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1」
+
 import time
 from kafka import KafkaProducer
 
@@ -38,7 +40,7 @@ def identify(inputKeyValue):
         identifyResult=types[onion.predict(xs).argmax(axis=-1)[0]]
         outputKeyValue=(inputKeyValue[0], identifyResult)
     except:
-        outputKeyValue = (inputKeyValue[0], "ERROR VALUES! Please input the value with the picture in base64.b64encode bytes type!")
+        outputKeyValue = (inputKeyValue[0], "ERROR VALUES! Please input the value with the picture in base64.b64encode bytes type OR type Key & value SEPARATELY!")
 
     return outputKeyValue
 
@@ -47,17 +49,17 @@ def output_partition(partition):
     producer = KafkaProducer(bootstrap_servers=broker_list)
     for p in partition:
         result = "({},{})".format(p[0], p[1])
-        producer.send(output_topic, value=bytes(result, "utf8"))
+        producer.send(output_topic, value=bytes(result, "utf8"))  # Spark Streaming need to use 「bytes」 type to send messages
     producer.close()
 
 
 
 if __name__ == "__main__":
-    sc = SparkContext()+
+    sc = SparkContext()
     ssc = StreamingContext(sc, 1)
 
     onion=None
-    ipkafka4ZK = "kafka4ZK:2181"  # "172.21.0.2:2181"
+    ipkafka4ZK = "kafka4ZK:2181"  # "172.20.0.2:2181"
     input_topic = "onionTopic1"
 
     ipkafka4Br1 = "kafka4Br1:9092"  # "172.20.0.3:9092"
@@ -66,8 +68,8 @@ if __name__ == "__main__":
     broker_list = [ipkafka4Br1, ipkafka4Br2, ipkafka4Br2]
     output_topic = "onionTopic2"
 
-
     raw_stream = KafkaUtils.createStream(ssc, ipkafka4ZK, "consumer-group", {input_topic: 3})
+
 
     result = raw_stream.map(identify)
     result.cache()
@@ -82,6 +84,6 @@ if __name__ == "__main__":
 
 
 #========================= ( CMD 4 running this file(identify4spark.py) in Spark Streaming )
-# spark-submit --master spark://172.21.0.2:7077 --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identify4spark.py
 # spark-submit --master spark://172.21.0.2:7077 --executor-memory 4G --executor-cores 2 --driver-memory 4G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identify4spark.py
+
 
