@@ -17,10 +17,10 @@ def identify(inputKeyValue):
         from keras.models import load_model
         global onion
         if onion is None:
-            onion = load_model("clothes5_4310.h5")  # "./modules/clothes5_4310.h5"
+            onion = load_model("clothes5_4310.h5")  # spark-submit 用「--files modules/clothes5_4310.h5 identify4spark.py」攜帶檔案到叢集時，其匯入檔案路徑必在「./」下
 
         import base64
-        data=base64.b64decode(predictPicture)
+        data=base64.b64decode(predictPicture)  # 注意輸入的圖片資料型態必須是字節(bytes)，即傳進來的圖片必須先被「base64.b64encode(f.read())」編碼，收到資料後才能被「base64.b64decode(predictPicture)」解碼
 
         from PIL import Image
         import io
@@ -33,7 +33,7 @@ def identify(inputKeyValue):
         imglist.append(preprocess_input(np.array(fn)))
         xs = np.array(imglist)
 
-        time.sleep(1)  # 休息1秒
+        time.sleep(0.1)  # 休息0.1秒
         # Identification Result
         identifyResult=types[onion.predict(xs).argmax(axis=-1)[0]]
         outputKeyValue=(inputKeyValue[0], identifyResult)
@@ -53,17 +53,17 @@ def output_partition(partition):
 
 
 if __name__ == "__main__":
-    sc = SparkContext()
+    sc = SparkContext()+
     ssc = StreamingContext(sc, 1)
 
     onion=None
-    ipkafka4ZK = "172.21.0.5:2181"
+    ipkafka4ZK = "kafka4ZK:2181"  # "172.21.0.2:2181"
     input_topic = "onionTopic1"
 
-    ipkafka4Br1 = "172.21.0.6:9092"
-    ipkafka4Br2 = "172.21.0.7:9092"
-    ipkafka4Br3 = "172.21.0.8:9092"
-    broker_list = [ipkafka4Br1] # broker_list = [ipkafka4Br1, ipkafka4Br2, ipkafka4Br2]
+    ipkafka4Br1 = "kafka4Br1:9092"  # "172.20.0.3:9092"
+    ipkafka4Br2 = "kafka4Br2:9092"  # "172.20.0.4:9092"
+    ipkafka4Br3 = "kafka4Br3:9092"  # "172.20.0.5:9092"
+    broker_list = [ipkafka4Br1, ipkafka4Br2, ipkafka4Br2]
     output_topic = "onionTopic2"
 
 
@@ -83,5 +83,5 @@ if __name__ == "__main__":
 
 #========================= ( CMD 4 running this file(identify4spark.py) in Spark Streaming )
 # spark-submit --master spark://172.21.0.2:7077 --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identify4spark.py
-# spark-submit --master spark://172.21.0.2:7077 --executor-memory 5G --executor-cores 3 --driver-memory 5G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identify4spark.py
+# spark-submit --master spark://172.21.0.2:7077 --executor-memory 4G --executor-cores 2 --driver-memory 4G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identify4spark.py
 
