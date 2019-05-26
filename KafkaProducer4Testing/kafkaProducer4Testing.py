@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # you must 「pip3 install confluent-kafka」
-# REMEMBER change "suitable Kafka_broker_IP(ipkafka4Br1)" & "what TOPIC(topicName) you want send" before running this .py file!!!
+# REMEMBER change "suitable Kafka_broker_IP(ipkafka4Br1)" & "which TOPIC(topicName) you want send" before running this .py file!!!
 from confluent_kafka import Producer
 import sys
 
@@ -14,7 +14,7 @@ def error_cb(err):
 if __name__ == '__main__':
     # 步驟0. 從本地端開檔匯入一張圖片
     import base64
-    with open("../IdentifyImages4SingleMachine/identifiedData/Brain_suit.jpg","rb") as f:  # /home/onion/onion/pro4clothes/Identify5Category/identifiedData/Brain_suit.jpg
+    with open("../IdentifyImages4SingleMachine/identifiedData/Brain_suit.jpg","rb") as f:  # /home/onion/onion/pro4clothes/IdentifyImages4SparkStreamingWithKafka/IdentifyImages4SingleMachine/identifiedData/Brain_suit.jpg
         data=base64.b64encode(f.read())
 
     # 步驟1. 設定要連線到Kafka集群的相關設定
