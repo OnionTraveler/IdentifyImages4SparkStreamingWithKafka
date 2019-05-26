@@ -22,7 +22,7 @@ def identify(inputKeyValue):
             onion = load_model("clothes5_4310.h5")  # spark-submit 用「--files modules/clothes5_4310.h5」攜帶檔案到叢集時，其匯入檔案路徑必在「./」下
 
         import base64
-        data=base64.b64decode(predictPicture)  # 注意輸入的圖片資料型態必須是字節(bytes)，即傳進來的圖片必須先被「base64.b64encode(f.read())」編碼，收到資料後才能被「base64.b64decode(predictPicture)」解碼
+        data=base64.b64decode(predictPicture)  # 注意輸入的圖片資料型態必須是字節(bytes)，即傳進來的圖片必須先被「base64.b64encode(f.read())」編碼，收到資料後才能被「base64.b64decode(predictPicture)」解碼 (因為kafka接收與送出訊息的資料型態皆為bytes)
 
         from PIL import Image
         import io
@@ -49,7 +49,7 @@ def output_partition(partition):
     producer = KafkaProducer(bootstrap_servers=broker_list)
     for p in partition:
         result = "({},{})".format(p[0], p[1])
-        producer.send(output_topic, value=bytes(result, "utf8"))  # Spark Streaming need to use 「bytes」 type to send messages
+        producer.send(output_topic, value=bytes(result, "utf8"))  # Kafka need to use 「bytes」 type to consume messages
     producer.close()
 
 
