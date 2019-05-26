@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # you must 「pip3 install numpy pandas Pillow jieba keras kafka tensorflow tensorflowonspark」 to run the following code!
+# REMEMBER change "suitable Zookeeper_IP(ipkafka4ZK) Kafka_broker_IP(ipkafka4Br1, ipkafka4Br2, ipkafka4Br3)" & "which TOPIC(input_topic, output_topic) you want receive and send" before running this .py file!!!
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils  # This is for 「kafka streaming connection」 from 「--packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1」
@@ -82,6 +83,8 @@ if __name__ == "__main__":
     ssc.start()
     ssc.awaitTermination()
 
+
+#========================= ( CMD 4 running this file(identify4spark.py) in Spark Streaming )
 
 #========================= ( CMD 4 running this file(identify4spark.py) in Spark Streaming )
 # spark-submit --master spark://master:7077 --executor-memory 4G --executor-cores 2 --driver-memory 4G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identifyImages4SparkStreamingWithKafka.py
