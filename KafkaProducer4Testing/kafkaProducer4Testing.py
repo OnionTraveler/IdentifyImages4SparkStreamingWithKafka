@@ -9,7 +9,6 @@ import sys
 def error_cb(err):
     print('Error: %s' % err)
 
-
 # 主程式進入點
 if __name__ == '__main__':
     # 步驟0. 從本地端開檔匯入一張圖片
@@ -48,5 +47,4 @@ if __name__ == '__main__':
 
     # 步驟5. 確認所在Buffer的訊息都己經送出去給Kafka了
     producer.flush()
-
 
