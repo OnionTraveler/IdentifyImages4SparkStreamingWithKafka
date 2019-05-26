@@ -84,9 +84,9 @@ if __name__ == "__main__":
 
 
 #========================= ( CMD 4 running this file(identify4spark.py) in Spark Streaming )
-# spark-submit --master spark://master:7077 --executor-memory 4G --executor-cores 2 --driver-memory 4G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identify4SparkStreamingWithKafka.py
+# spark-submit --master spark://master:7077 --executor-memory 4G --executor-cores 2 --driver-memory 4G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identifyImages4SparkStreamingWithKafka.py
 
-# spark-submit --master spark://172.21.0.2:7077 --executor-memory 4G --executor-cores 2 --driver-memory 4G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identify4SparkStreamingWithKafka.py
+# spark-submit --master spark://172.21.0.2:7077 --executor-memory 4G --executor-cores 2 --driver-memory 4G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identifyImages4SparkStreamingWithKafka.py
 
 
 
