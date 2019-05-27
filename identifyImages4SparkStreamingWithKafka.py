@@ -83,13 +83,26 @@ if __name__ == "__main__":
     ssc.start()
     ssc.awaitTermination()
 
+    
+    
 
-#========================= ( CMD 4 running this file(identify4spark.py) in Spark Streaming )
+
+#========================= ( Cheching if all Spark clusters'(master, slaver1, slaver2) IPs on the right network bridge (kafka4onion) )
+# Create docker network bridge for Kafka called 「kafka4onion」 if they don't exist!!
+#  [ `docker network ls | grep 'kafka4onion' | cut -d ' ' -f 9` ] && echo "The network 「kafka4onion」 has existed！" || docker network create -d bridge kafka4onion
+
+# REMEMBER that ALL Spark clusters MUST be connected into Kafka network (kafka4onion) first!! 
+# docker network connect kafka4onion master
+# docker network connect kafka4onion slaver1
+# docker network connect kafka4onion slaver2
+
+# Check ALL Spark clusters & Kafka clusters IP in order to EDIT CORRECT IPs in this .py file!!
+# docker inspect --format "{{ .NetworkSettings.Networks.kafka4onion.IPAddress }}" 「容器名稱」
+# docker inspect --format "{{ .NetworkSettings.Networks.HDSP4onion.IPAddress }}" 「容器名稱」
+# docker inspect --format "{{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}" 「容器名稱」
 
 #========================= ( CMD 4 running this file(identify4spark.py) in Spark Streaming )
 # spark-submit --master spark://master:7077 --executor-memory 4G --executor-cores 2 --driver-memory 4G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identifyImages4SparkStreamingWithKafka.py
 
 # spark-submit --master spark://172.21.0.2:7077 --executor-memory 4G --executor-cores 2 --driver-memory 4G --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.3.1 --files modules/clothes5_4310.h5 identifyImages4SparkStreamingWithKafka.py
-
-
 
