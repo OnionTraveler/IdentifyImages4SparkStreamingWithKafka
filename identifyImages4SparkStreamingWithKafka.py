@@ -87,7 +87,7 @@ if __name__ == "__main__":
     
 
 
-#========================= ( Cheching if all Spark clusters'(master, slaver1, slaver2) IPs on the right network bridge (kafka4onion) )
+#========================= ( Cheching if all Spark clusters'(master, slaver1, slaver2) IPs on the right network bridge (kafka4onion) ) (3 steps)
 # Create docker network bridge for Kafka called 「kafka4onion」 if they don't exist!!
 #  [ `docker network ls | grep 'kafka4onion' | cut -d ' ' -f 9` ] && echo "The network 「kafka4onion」 has existed！" || docker network create -d bridge kafka4onion
 
@@ -96,7 +96,7 @@ if __name__ == "__main__":
 # docker network connect kafka4onion slaver1
 # docker network connect kafka4onion slaver2
 
-# Check ALL Spark clusters & Kafka clusters IP in order to EDIT CORRECT IPs in this .py file!!
+# Check ALL Spark clusters & Kafka clusters IPs in order to EDIT CORRECT IPs in this .py file!!
 # docker inspect --format "{{ .NetworkSettings.Networks.kafka4onion.IPAddress }}" 「容器名稱」
 # docker inspect --format "{{ .NetworkSettings.Networks.HDSP4onion.IPAddress }}" 「容器名稱」
 # docker inspect --format "{{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}" 「容器名稱」
